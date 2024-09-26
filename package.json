@@ -1,22 +1,19 @@
 {
-  "name": "gldb",
-  "version": "1.0.0",
-  "description": "A Node.js application to search and log queries",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.10",
-    "express": "^4.21.0",
-    "joi": "^17.13.3",
-    "mysql2": "^2.3.3"
-  },
-  "engines": {
-    "node": ">=14.x"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
-}
+    "name": "gldb",
+    "version": "1.0.0",
+    "main": "app.js",
+    "scripts": {
+      "dev": "nodemon app.js"
+    },
+    "dependencies": {
+      "dotenv": "^10.0.0",
+      "express": "^4.17.1",
+      "joi": "^17.4.0",
+      "mysql2": "^2.3.3",
+      "ejs": "^3.1.6"
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }
+  
