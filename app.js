@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Connect to MySQL
 function connectToDatabase(db_name) {
     return mysql.createConnection({
@@ -143,6 +144,12 @@ app.post('/', async (req, res) => {
         console.error(error); // Log the error to Vercel logs
         res.status(500).send('Internal Server Error');
     }
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err); // Log the error for debugging
+    res.status(500).send('Internal Server Error');
 });
 
 
