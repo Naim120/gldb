@@ -127,18 +127,24 @@ app.get('/', (req, res) => {
 
 // Handle search requests
 app.post('/', async (req, res) => {
-    const userInput = req.body.user_input;
-    const ip_address = req.ip;
-    const user_agent = req.headers['user-agent'];
+    try {
+        const userInput = req.body.user_input;
+        const ip_address = req.ip;
+        const user_agent = req.headers['user-agent'];
 
-    const inputType = identifyAndValidateInput(userInput);
-    if (!inputType) {
-        return res.render('index', { error_message: 'Invalid input. Please enter a valid email, phone number, or web3 address.' });
+        const inputType = identifyAndValidateInput(userInput);
+        if (!inputType) {
+            return res.render('index', { error_message: 'Invalid input. Please enter a valid email, phone number, or web3 address.' });
+        }
+
+        const foundInfo = await performSearch(userInput, ip_address, user_agent);
+        res.render('results', { found_info: foundInfo, user_input: userInput });
+    } catch (error) {
+        console.error(error); // Log the error to Vercel logs
+        res.status(500).send('Internal Server Error');
     }
-
-    const foundInfo = await performSearch(userInput, ip_address, user_agent);
-    res.render('results', { found_info: foundInfo, user_input: userInput });
 });
+
 
 // Query history route
 app.get('/query_history', async (req, res) => {
