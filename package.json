@@ -1,5 +1,5 @@
 {
-  "name": "my-node-app",
+  "name": "gldb",
   "version": "1.0.0",
   "description": "A Node.js application to search and log queries",
   "main": "app.js",
