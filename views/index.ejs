@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search User Information</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+        body {
+            padding: 0;
+            margin: 0;
+            background: url("/earth.jpg");
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.6);
+            background-blend-mode: darken;
+            width: 100%;
+            height: 100vh;
+        }
+        .main {
+            width: 99%;
+            height: 99%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .title {
+            font-family: "Exo 2";
+            font-size: 45px;
+            color: white;
+            text-align: center;
+        }
+        .title-desc {
+            font-family: "Rajdhani";
+            font-size: 18px;
+        }
+        h1 {
+            font-family: "Noto Sans";
+            font-size: 45px;
+            color: white;
+            user-select: none;
+        }
+        input {
+            width: 300px;
+            height: 35px;
+            border-radius: 18px;
+            border: none;
+            padding: 4px;
+            padding-left: 6px;
+            margin-right: 6px;
+            box-shadow: 0 8px 32px 0 rgba(34, 133, 15, 0.849);
+            font-family: "Rajdhani";
+            font-size: 15px;
+            font-weight: 500;
+        }
+        input:focus {
+            outline: none;
+        }
+        .submit {
+            width: 75px;
+            border-radius: 12px;
+            padding: 5px;
+            border: none;
+            font-family: "Rajdhani";
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        span {
+            content: "\26A0";
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="title">
+            <div class="title-head">GLDB - Gathered Leaked DataBases</div>
+            <div class="title-desc"><span>&#9888;</span>  Note: This is currently under development and has only limited database available.</div>
+        </div>
+        <h1>Search User Information</h1>
+        <form method="POST" action="/">
+            <input type="text" name="user_input" placeholder="Enter email, phone, or web3 address" required>
+            <button class="submit" type="submit">Search</button>
+        </form>
+
+        <% if (error_message) { %>
+            <p style="color: red;"><%= error_message %></p>
+        <% } %>
+    </div>
+</body>
+</html>

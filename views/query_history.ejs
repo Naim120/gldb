@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Query History</title>
+</head>
+<body>
+    <h1>Query History</h1>
+    <ul>
+        <% query_logs.forEach(log => { %>
+            <li><strong>IP:</strong> <%= log.ip_address %> | <strong>Query:</strong> <%= log.query %> | <strong>User-Agent:</strong> <%= log.user_agent %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>

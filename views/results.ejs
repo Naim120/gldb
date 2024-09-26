@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-family: "Noto Sans";
+        }
+
+        .results-container {
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .branches-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .branch-item {
+            position: relative;
+            display: inline-block;
+            width: fit-content;
+            height: 40px;
+            margin: 50px 10px;
+            text-align: left;
+            vertical-align: middle;
+            word-wrap: normal;
+            background: rgba( 255, 255, 255, 0.35 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 8px );
+            -webkit-backdrop-filter: blur( 8px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            font-family: "Rajdhani";
+        }
+
+        .dropdown-button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .dropdown-button:hover {
+            background-color: transparent;
+        }
+
+        .branch-content {
+            display: none;
+            background-color: #222;
+            padding: 10px;
+            border: 1px solid #444;
+            margin-top: 10px;
+        }
+
+        .branch-content.open {
+            display: block;
+            word-wrap: break-word;
+            width: 250px;
+        }
+
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .branch-line {
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+        }
+
+        .search-again {
+            text-decoration: none;
+            font-family: "Noto Sans";
+            background-color: rgba( 255, 255, 255, 0.18 );
+            width: 150px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .branch-item {
+                width: 120px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .dropdown-button {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .branch-item {
+                width: 100px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="/earth-rotate.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="search-again"><a href="/">Back to Search</a></div>
+    <h1>Results for "<%= user_input %>"</h1>
+    <div class="results-container">
+        <svg id="branchLines"></svg>
+
+        <div class="branches-container">
+            <% if (found_info && found_info.length > 0) { %>
+                <% found_info.forEach(info => { %>
+                    <div class="branch-item">
+                        <!-- Dropdown button -->
+                        <button class="dropdown-button" onclick="toggleDropdown(this)">
+                            <%= info.db_name %> result ▼
+                        </button>
+                        
+                        <!-- Hidden content to display on click -->
+                        <div class="branch-content">
+                            <ul>
+                                <% for (const [key, value] of Object.entries(info.result)) { %>
+                                    <li><%= key %>: <%= value %></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No results found.</p>
+            <% } %>
+        </div>
+        
+    </div>
+
+    <script>
+        function drawBranches() {
+            const svg = document.getElementById('branchLines');
+            const branches = document.querySelectorAll('.branch-item');
+            const centerX = svg.clientWidth / 2;
+            const startY = 30;
+
+            svg.innerHTML = '';
+
+            branches.forEach((branch, index) => {
+                const branchX = branch.offsetLeft + branch.clientWidth / 2;
+                const branchY = branch.offsetTop + branch.clientHeight / 2;
+                
+                const pathData = `M ${centerX},${startY} Q ${branchX},${startY + (branchY - startY) / 2} ${branchX},${branchY - 10}`;
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathData);
+                path.setAttribute("class", "branch-line");
+                svg.appendChild(path);
+            });
+        }
+    
+        function toggleDropdown(button) {
+            const allDropdowns = document.querySelectorAll('.branch-content');
+            allDropdowns.forEach(dropdown => {
+                if (dropdown !== button.nextElementSibling) {
+                    dropdown.classList.remove('open');
+                }
+            });
+    
+            const content = button.nextElementSibling;
+            content.classList.toggle('open');
+        }
+    
+        window.onload = drawBranches;
+        window.onresize = drawBranches;
+    </script>
+</body>
+</html>
